@@ -13,21 +13,27 @@ void readInput() {
     for (int i=0; i<_lines; i++) cin >> _linesValues[i];
 }
 
-int evaluateInput() {
+int evaluateInput(int n) {
     int _totalBigSquares=0;
 
-    for (int i=0; i<_lines-1; i++) {
-        int _bigSquares = min(_linesValues[i], _linesValues[i+1]);
-        _totalBigSquares += (_bigSquares!=0) ? _bigSquares-1 : 0;
+    for (int i=0; i<=_lines-n; i++) {
+
+        int _bigSquares = _linesValues[i];
+        for (int j=i; j<(n+i-1); j++) {
+            _bigSquares = min(_bigSquares, _linesValues[j + 1]);
+        }
+
+        _totalBigSquares += (_bigSquares >= n) ? 1+(_bigSquares-n) : 0;
     }
 
-    // +1, all small squares;
-    return _totalBigSquares + 1;
+    return _totalBigSquares;
 }
 
 int main() {
     readInput();
-    cout << evaluateInput() << endl;
+    for (int i=_lines; i>0; i--) {
+        cout << printf("%d %dx%d squares in this board.",evaluateInput(i),i,i) << endl;
+    }
 
     return 0;
 }
