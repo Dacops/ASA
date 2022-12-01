@@ -1,6 +1,11 @@
 #include <iostream>
 #include <vector>
 
+#define ANSI_COLOR_RED     "\x1b[31m"
+#define ANSI_COLOR_GREEN   "\x1b[32m"
+#define ANSI_COLOR_RESET   "\x1b[0m"
+
+
 using namespace std;
 
 int _lines, _columns;
@@ -10,12 +15,15 @@ vector<vector<int>> _freeSpaces;
 
 void readInput() {
     cin >> _lines; cin >> _columns;         // read number of lines and columns.
-    _linesValues.resize(_lines);            // create vector that saves width of each line.
-    for (int i=0; i<_lines; i++) cin >> _linesValues[i];
-
-    _freeSpaces.resize(_lines);             // create matrix to save free spaces on the board.
+    _linesValues.resize(_lines*sizeof(int));// create vector that saves width of each line.
     for (int i=0; i<_lines; i++) {
-        _freeSpaces[i].resize(_columns);
+        cin >> _linesValues[i];
+    }
+
+
+    _freeSpaces.resize(_lines*sizeof(int)); // create matrix to save free spaces on the board.
+    for (int i=0; i<_lines; i++) {
+        _freeSpaces[i].resize(_columns*sizeof(int));
         for (int j=_columns; j>=_linesValues[i]; j--) { _freeSpaces[i][j]=1; }
     }
 }
@@ -23,7 +31,9 @@ void readInput() {
 void showFreeSpaces() {
     for (int i=0; i<_lines; i++) {
         for (int j=0; j<_columns; j++) {
-            cout << _freeSpaces[i][j] << " ";
+            if (_freeSpaces[i][j]) { printf(ANSI_COLOR_GREEN); cout << "0 "; }
+            else { printf(ANSI_COLOR_RED); cout << "0 "; }
+            printf(ANSI_COLOR_RESET);
         }
         cout << endl;
     }
