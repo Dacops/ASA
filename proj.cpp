@@ -1,89 +1,121 @@
 #include <iostream>
 #include <vector>
-
-#define ANSI_COLOR_RED     "\x1b[31m"
-#define ANSI_COLOR_GREEN   "\x1b[32m"
-#define ANSI_COLOR_RESET   "\x1b[0m"
+#include <cstring>
 
 
 using namespace std;
 
-int _lines, _columns;
-vector<int> _linesValues;
-vector<vector<int>> _freeSpaces;
-
+int combinations = 0;                       // total number of combinations.
+vector<int> _linesValues;                   // vector to save free spaces per row;
+vector<int> _occupiedColumns;               // vector to save occupied columns per row;
 
 void readInput() {
-    cin >> _lines; cin >> _columns;         // read number of lines and columns.
-    _linesValues.resize(_lines*sizeof(int));// create vector that saves width of each line.
-    for (int i=0; i<_lines; i++) {
+    int lines, columns;                     // read number of lines and columns.
+    cin >> lines;
+    cin >> columns;                         // columns are not used but still need to be read.
+    _linesValues.resize(lines);             // create vector that saves free spaces per row.
+    _occupiedColumns.resize(lines);         // create vector that saves occupied columns per row.
+    for (int i = 0; i < lines; i++) {
         cin >> _linesValues[i];
-    }
-
-
-    _freeSpaces.resize(_lines*sizeof(int)); // create matrix to save free spaces on the board.
-    for (int i=0; i<_lines; i++) {
-        _freeSpaces[i].resize(_columns*sizeof(int));
-        for (int j=_columns; j>=_linesValues[i]; j--) { _freeSpaces[i][j]=1; }
+        _occupiedColumns[i] = 0;
     }
 }
 
-void showFreeSpaces() {
-    for (int i=0; i<_lines; i++) {
-        for (int j=0; j<_columns; j++) {
-            if (_freeSpaces[i][j]) { printf(ANSI_COLOR_GREEN); cout << "0 "; }
-            else { printf(ANSI_COLOR_RED); cout << "0 "; }
-            printf(ANSI_COLOR_RESET);
+int isOver(vector<int> values) {
+
+    int flag = 0;
+    for(int i=0; i<(int)values.size(); i++) {
+        if (values[i]!=0 ? flag++ : flag=0);
+
+        if (flag==2) { return 0; }
+    }
+    return 1;
+}
+
+int freeSpace(int size, vector<int> values, vector<int> occupied) {
+
+    int minimum = occupied[0];
+    for(int i=0; i<(int)occupied.size(); i++) { if(occupied[i]<minimum) minimum=occupied[i]; }
+
+    for(int i=0; i<=(int)values.size()-size; i++) {
+        int space = (occupied[i]==minimum ? values[i] : 0);
+        for(int n=1; n<size; n++) {
+            if (occupied[i+n]!=minimum) { space=0; }    // 1st column of this row isn't free;
+            space = min(space, values[i+n]);
         }
-        cout << endl;
+        if(space>=size) { return i; }
     }
-    cout << endl;
+    // error code no square of size "size" fits in this staircase.
+    return -1;
 }
 
-void addSquare(int line, int size) {
-    int column=0;
+void getCombinations(vector<int> values, vector<int> occupied) {
 
-    while (_freeSpaces[line][column]) { column++; }
-    printf("Adding square on position (%d, %d) of size %dx%d\n", line, column, size, size);
+    // vectors to be transformed by this iteration.
+    vector<int> newValues;
+    vector<int> newOccupied;
 
-    for (int i=line; i<line+size; i++) {
-        for (int j=column; j<column+size; j++) {
-            _freeSpaces[i][j]=1;
-            _linesValues[i]--;
+    // sizes of inputted vectors.
+    int size = (int)values.size();
+    newValues.resize(size);
+    newOccupied.resize(size);
+
+    // Remove lines with 1 or less free spots (creates new vectors).
+    for(int i=0; i<size; i++) {
+        if(values[i]>1) {
+            newValues[i]=values[i];
+            newOccupied[i]=occupied[i];
+        }
+        else {
+            newValues[i]=0;
+            newOccupied[i]=occupied[i]+1;
         }
     }
 
-    showFreeSpaces();
-    cout << "-----------------------------\n" << endl;
-}
+    // If only one line has free spots there's only 1 possible combination (all 1x1).
+    if(isOver(newValues)) { combinations++; return; }
 
-int isFree(int size) {
-    for (int i=0; i<=_lines-size; i++) {
+    // Implement dynamic coding. Check if inputted vector was already calculated.
 
-        int _freeSpace = _linesValues[i];
-        if (_freeSpace>=size) {
-            for (int j = i; j < (size + i - 1); j++) {
-                _freeSpace = min(_freeSpace, _linesValues[j + 1]);
+    // Check if Squares of nxn size can fit in the free spots.
+    for(int n=size; n>0; n--) {
+
+        // 1st line where a square can be placed.
+        int pos = freeSpace(n, newValues, newOccupied);
+
+        // error code, no square of n size fits in the matrix.
+        if(pos!=-1) {
+            // new vectors need to be created, so they can be edited, newValues and newOccupied are being
+            // used by all instances created in this generation.
+            vector<int> newerValues;
+            vector<int> newerOccupied;
+            newerValues.resize(size);
+            newerOccupied.resize(size);
+            for (int j = 0; j < size; j++) {
+                newerValues[j] = newValues[j];
+                newerOccupied[j] = newOccupied[j];
             }
 
-            if (_freeSpace >= size) {
-                addSquare(i, size);
-                return 1;
+            // k equals line to place the square, i equals offset, j equals remaining lines for example a 2x2 square
+            // takes spots in 2 lines.
+
+            // index returned may be last position.
+            for (int j = 0; j < n; j++) {
+                newerValues[j + pos] = newerValues[j + pos] - n;
+                newerOccupied[j + pos] += n;
             }
+
+            getCombinations(newerValues, newerOccupied);
         }
     }
-    return 0;
 }
 
-void getSolution() {
-    for (int n=_lines; n>0; n--) {           // is it possible to insert a square
-        if (isFree(n)) n++;             // with nxn size?
-    }
-}
 
 int main() {
+
     readInput();
-    showFreeSpaces();
-    getSolution();
+    getCombinations(_linesValues, _occupiedColumns);
+    cout << combinations << endl;
+
     return 0;
 }
