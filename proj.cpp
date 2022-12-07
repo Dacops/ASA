@@ -96,10 +96,6 @@ void getCombinations(vector<int> values, vector<int> occupied) {
                 newerOccupied[j] = newOccupied[j];
             }
 
-            // k equals line to place the square, i equals offset, j equals remaining lines for example a 2x2 square
-            // takes spots in 2 lines.
-
-            // index returned may be last position.
             for (int j = 0; j < n; j++) {
                 newerValues[j + pos] = newerValues[j + pos] - n;
                 newerOccupied[j + pos] += n;
