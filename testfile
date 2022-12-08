@@ -1,0 +1,5 @@
+ERROR: invalid # arguments
+Usage: ./gerador #N #M seed
+	#N: number of lines
+	#M: number of columns
+	seed: random seed number (optional)
