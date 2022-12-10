@@ -7,6 +7,7 @@
 #include <sstream>
 #include <iterator>
 #include <numeric>
+#include <iomanip>
 
 
 using namespace std;
@@ -155,7 +156,9 @@ int main() {
         cout << 0 << endl;
         return 0;
     }
-    cout << getCombinations(_linesValues, _occupiedColumns) << endl;
+    // std::fixed force C++ to not use scientific notation
+    // std::setprecision round to 0 decimal cases (remove double decimal places)
+    cout << fixed << setprecision(0) << getCombinations(_linesValues, _occupiedColumns) << endl;
 
     return 0;
 }
