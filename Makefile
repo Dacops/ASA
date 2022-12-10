@@ -6,7 +6,7 @@ gerador: gerador.cpp
 	g++ $(CFLAGS) ladrilho_valido.cpp -lm -o gerador
 
 run: proj
-	./proj < p1_testeZ.txt
+	./proj < input.txt
 rung: proj gerador
 	./gerador args > testfile
 	./proj < testfile

@@ -101,7 +101,6 @@ double getCombinations(vector<int> values, vector<int> occupied) {
 
     // if the pair of newValues newOccupied was already calculated, add the number of combinations to the total and return else insert it to map
     if(map.find(hashFunc(newValues,normalize(newOccupied))) != map.end()) { return map[hashFunc(newValues,normalize(newOccupied))]; }
-    else { map[hashFunc(newValues,normalize(newOccupied))] = 0; }
 
     // If only one line has free spots there's only 1 possible combination (all 1x1).
     if(isOver(newValues)) { map[hashFunc(newValues,normalize(newOccupied))] = 1; return map[hashFunc(newValues,normalize(newOccupied))]; }
