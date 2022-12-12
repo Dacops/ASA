@@ -1,3 +1,9 @@
+/*
+Projeto Realizado Por:
+    David Pires ist1 103458
+    Diogo Miranda ist1 102536
+*/
+
 #include <iostream>
 #include <vector>
 #include <cstring>
@@ -18,7 +24,7 @@ bool allZeros = true;                       // check if all entries are 0
 vector<int> _linesValues;                   // vector to save free spaces per row.
 vector<int> _occupiedColumns;               // vector to save occupied columns per row (offset).
 //create a hashmap where the keys are a pair of vectors and the values are the number of combinations
-unordered_map<string, double> map;
+unordered_map<string, long> map;
 
 
 void readInput() {
@@ -55,6 +61,7 @@ string hashFunc(vector<int> arg, vector<int> arg1) {
 bool isOver(vector<int> values) {
 
     int flag = 0;
+    //if there's 2 values more than 1 in 2 consecutive lines than the combinations from the subproblem are >1
     for(int i=0; i<(int)values.size(); i++) {
         if (values[i]>1 ? flag++ : flag=0);
         if (flag==2) return false;
@@ -75,7 +82,7 @@ bool isPossible(int pos, int size, vector<int> values, vector<int> occupied) {
     return true;
 }
 
-double getCombinations(vector<int> values, vector<int> occupied) {
+long getCombinations(vector<int> values, vector<int> occupied) {
 
     // vectors to be transformed by this iteration.
     vector<int> newValues;
@@ -140,11 +147,11 @@ double getCombinations(vector<int> values, vector<int> occupied) {
                 newerValues[j] -= n;
                 newerOccupied[j] += n;
             }
+            //add more to the hashmap the number of combinations of the subproblem
             map[hashFunc(newValues,normalize(newOccupied))] += getCombinations(newerValues, newerOccupied);
         }
     }
     return map[hashFunc(newValues,normalize(newOccupied))];
-    //map.insert(make_pair(hashFunc(newValues,normalize(newOccupied)), valueToInsert));
 }
 
 
@@ -155,9 +162,7 @@ int main() {
         cout << 0 << endl;
         return 0;
     }
-    // std::fixed force C++ to not use scientific notation
-    // std::setprecision round to 0 decimal cases (remove double decimal places)
-    cout << fixed << setprecision(0) << getCombinations(_linesValues, _occupiedColumns) << endl;
+    cout << getCombinations(_linesValues, _occupiedColumns) << endl;
 
     return 0;
 }
