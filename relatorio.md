@@ -7,8 +7,8 @@
 ## Descrição do Problema e da Solução
 
 **Problema:** Dada uma matriz nxn, qual o número de combinações possível para cobrir essa mesma matrix com x quadrados de tamanho m x m.
-**Solução:** Obtendo o vetor de colunas ocupadas por linha podemos ir inserindo quadrados m x m 1 a 1 e decreescendo a linha onde foi colocado (e as seguintes (m-1) linhas) por m unidades. Para evitar combinações repetidas utilizámos um vetor auxiliar que guarde as colunas à esquerda ocupadas por linha. Utilizamos este vetor para dar prioridade à colocação de quadrados o mais à esquerda e cima possível (dando prioridade entre os dois à esquerda). Este método elimina o problema das combinações repetidas.
-O algoritmos funciona, como explicado anteriormente retirando a cada iteração do programa um quadrado atualizando os vetores que mapeiam a matriz do problema, quando a matriz ficar a zeros uma combinação foi alcançada. Focando-nos primeiro nos maiores quadrados e por fim nos 1 por 1 o programa acaba quando for alcançada a combinação de quadrados 1 por 1.
+
+**Solução:** Obtendo o vetor de colunas ocupadas por linha podemos ir inserindo quadrados m x m e decreescendo a linha onde foi colocado (e as seguintes (m-1) linhas) por m unidades. Para evitar combinações repetidas utilizámos um vetor auxiliar que guarda as colunas à esquerda ocupadas por linha. Utilizamos este vetor para dar prioridade à colocação de quadrados o mais à esquerda e cima possível (dando prioridade entre os dois à esquerda). Este método elimina o problema das combinações repetidas. Retirando a cada iteração do programa um quadrado atualiza-se os vetores que mapeiam a matriz do problema, quando a matriz ficar a zeros uma combinação foi alcançada. Focando-nos primeiro nos maiores quadrados e por fim nos 1 por 1 o programa acaba quando for alcançada a combinação de quadrados 1 por 1.
 
 
 ## Análise Teórica
@@ -34,7 +34,6 @@ Complexidade Global (explicitada na última página) :
 
 $$O({\mathrm{e}^n})$$
 
-***
 
 # Relatório 1º Projeto ASA 2022/2023
 
@@ -47,7 +46,7 @@ $$O({\mathrm{e}^n})$$
 
 Ambos os gráficos demonstram o tempo de execução em segundos para uma matriz n por n que pode ser totalmente preenchida. O primeiro gráfico demonstra a nossa primeira solução, sem programação dinâmica, já o segundo demonstra a nossa solução final, com programação dinâmica (note-se que o último caso do primeiro gráfico, 8x8 será ainda maior, uma vez que devido ao longo tempo que este teste estava a demorar este mesmo foi cancelado antes de acabar, sendo o tempo no gráfico o tempo no momento do cancelamento).
 
-![](./Recursao.png)
+![](./Resources/Recursao.png)
 
 Este gráfico aproxima-se da função (Explicitado na última página):
 
@@ -55,7 +54,7 @@ $$ O({n^n}) $$
 
 Com esta complexidade este algoritmo é extremamente ineficiente, no entanto com a introdução da programação dinâmica conseguimos tornar o algoritmo bastante mais eficiente.
 
-![](./ProgramacaoDinamica.png)
+![](./Resources/ProgramacaoDinamica.png)
 
 Este gráfico aproxima-se da função (Explicitado na última página):
 
@@ -64,13 +63,6 @@ $$ O({\mathrm{e}^n}) $$
 Embora ainda bastante ineficiente este algoritmo, com programação dinâmica é extremamente mais rápido que o anterior, como se pode ver em comparação com os dois gráficos.
 
 ***
-
-# Relatório 1º Projeto ASA 2022/2023
-
-
-## Grupo: tp012 
-
-**Alunos: David Pires (103458) Diogo Miranda (102536)**
 
 ## Possível explicitação da complexidade total de ambas as versões do projeto (extra)
 
