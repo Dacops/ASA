@@ -1,113 +1,99 @@
-<h1 align = "center"> Relatório 1º Projeto ASA 2022/2023 </h1>
+# Relatório 1º Projeto ASA 2022/2023 
+
+## Grupo: tp012
+
+**Alunos: David Pires (103458) Diogo Miranda (102536)**
+
+## Descrição do Problema e da Solução
+
+**Problema:** Dada uma matriz nxn, qual o número de combinações possível para cobrir essa mesma matrix com x quadrados de tamanho m x m.
+**Solução:** Obtendo o vetor de colunas ocupadas por linha podemos ir inserindo quadrados m x m 1 a 1 e decreescendo a linha onde foi colocado (e as seguintes (m-1) linhas) por m unidades. Para evitar combinações repetidas utilizámos um vetor auxiliar que guarde as colunas à esquerda ocupadas por linha. Utilizamos este vetor para dar prioridade à colocação de quadrados o mais à esquerda e cima possível (dando prioridade entre os dois à esquerda). Este método elimina o problema das combinações repetidas.
+O algoritmos funciona, como explicado anteriormente retirando a cada iteração do programa um quadrado atualizando os vetores que mapeiam a matriz do problema, quando a matriz ficar a zeros uma combinação foi alcançada. Focando-nos primeiro nos maiores quadrados e por fim nos 1 por 1 o programa acaba quando for alcançada a combinação de quadrados 1 por 1.
 
 
-<h2> Grupo: tp012 </h2>
+## Análise Teórica
 
-<h2><font size = "3"> Alunos: David Pires (103458) Diogo Miranda (102536) </font></h2>
+- Ler o input dado (simples loop que lê todas as entradas): O(n)
 
-<br>
-<h1> Descrição do Problema e da Solução</h1>
+- Criação do hashcode dos vectores de quadrados ocupado e livre (lê todas as entradas do vetor): O(n)
 
-<p><font size = "3"> Problema: Dada uma matriz nxn, qual o número de combinações possível para cobrir essa mesma matrix com x quadrados de tamanho m x m. </font></p>
-<p><font size = "3"> Solução: Obtendo o vetor de colunas ocupadas por linha podemos ir inserindo quadrados m x m 1 a 1 e decreescendo a linha onde foi colocado (e as seguintes (m-1) linhas) por m unidades. Para evitar combinações repetidas utilizámos um vetor auxiliar que guarde as colunas à esquerda ocupadas por linha. Utilizamos este vetor para dar prioridade à colocação de quadrados o mais à esquerda e cima possível (dando prioridade entre os dois à esquerda). Este método elimina o problema das combinações repetidas. </font></p>
-<p><font size = "3"> O algoritmos funciona, como explicado anteriormente retirando a cada iteração do programa um quadrado atualizando os vetores que mapeiam a matriz do problema, quando a matriz ficar a zeros uma combinação foi alcançada. Focando-nos primeiro nos maiores quadrados e por fim nos 1 por 1 o programa acaba quando for alcançada a combinação de quadrados 1 por 1. </font></p>
+- Normalizar o vector de quadrados ocupados (lê todas as entradas do vetor): O(n)
 
-<br>
+- Verificar se o vector livre tem futura geração (lê todas as entradas do vetor): O(n) 
 
-<h1><font size = "5"> Análise Teórica </font></h1>
+- Verificação se um quadrado m x m cabe no espaço disponível (lê as entradas do vetor desde a posição atual + m posições, onde m = lado do quadrado m x m a inserir) pior caso = quadrado n x n: O(n)
 
+- Encontrar um vetor hashmap (todas as entradas podem estar no mesmo "bucket"): O(n)
 
-* <font size = "3"> Ler o input dado (simples loop que lê todas as entradas): O(n) </font>
+- Colocar um vector no hashmap : O(1)
 
-* <font size = "3"> Criação do hashcode dos vectores de quadrados ocupado e livre (lê todas as entradas do vetor): O(n) </font>
-
-* <font size = "3"> Normalizar o vector de quadrados ocupados (lê todas as entradas do vetor): O(n) </font>
-
-* <font size = "3"> Verificar se o vector livre tem futura geração (lê todas as entradas do vetor): O(n) </font>
-
-* <font size = "3"> Verificação se um quadrado m x m cabe no espaço disponível (lê as entradas do vetor desde a posição atual + m posições, onde m = lado do quadrado m x m a inserir) pior caso = quadrado n x n: O(n) </font>
-
-* <font size = "3"> Encontrar um vetor hashmap (todas as entradas podem estar no mesmo "bucket"): O(n) </font>
-
-* <font size = "3"> Colocar um vector no hashmap : O(1) </font>
-
-* <font size = "3"> Apresentação dos dados (simples std::cout de uma variável global) : O(1) </font>
+- Apresentação dos dados (simples std::cout de uma variável global) : O(1)
 
 
-<p><font size = "3"> Complexidade Global (explicitada na última página) :  </font></p>
+Complexidade Global (explicitada na última página) :
 
 $$O({\mathrm{e}^n})$$
 
-
 ***
 
+# Relatório 1º Projeto ASA 2022/2023
 
-<h1 align = "center"> Relatório 1º Projeto ASA 2022/2023 </h1>
 
+## Grupo: tp012 
 
-<h2> Grupo: tp012 </h2>
+**Alunos: David Pires (103458) Diogo Miranda (102536)**
 
-<h2><font size = "3"> Alunos: David Pires (103458) Diogo Miranda (102536) </font></h2>
+## Avaliação Experimental dos Resultados
 
-<br>
-<h1> Avaliação Experimental dos Resultados </h1>
+Ambos os gráficos demonstram o tempo de execução em segundos para uma matriz n por n que pode ser totalmente preenchida. O primeiro gráfico demonstra a nossa primeira solução, sem programação dinâmica, já o segundo demonstra a nossa solução final, com programação dinâmica (note-se que o último caso do primeiro gráfico, 8x8 será ainda maior, uma vez que devido ao longo tempo que este teste estava a demorar este mesmo foi cancelado antes de acabar, sendo o tempo no gráfico o tempo no momento do cancelamento).
 
-<p><font size = "3"> Ambos os gráficos demonstram o tempo de execução em segundos para uma matriz n por n que pode ser totalmente preenchida. O primeiro gráfico demonstra a nossa primeira solução, sem programação dinâmica, já o segundo demonstra a nossa solução final, com programação dinâmica (note-se que o último caso do primeiro gráfico, 8x8 será ainda maior, uma vez que devido ao longo tempo que este teste estava a demorar este mesmo foi cancelado antes de acabar, sendo o tempo no gráfico o tempo no momento do cancelamento).  </font></p>
+![](./Recursao.png)
 
-<image src ="https://cdn.discordapp.com/attachments/639050837145944074/1052235316729229402/Screenshot_2022-12-13_at_14.47.22.png"></image> </image>
-
-<p><font size = "3"> Este gráfico aproxima-se da função (Explicitado na última página):  </font></p>
+Este gráfico aproxima-se da função (Explicitado na última página):
 
 $$ O({n^n}) $$
 
-<p><font size = "3"> Com esta complexidade este algoritmo é extremamente ineficiente, no entanto com a introdução da programação dinâmica conseguimos tornar o algoritmo bastante mais eficiente.  </font></p>
+Com esta complexidade este algoritmo é extremamente ineficiente, no entanto com a introdução da programação dinâmica conseguimos tornar o algoritmo bastante mais eficiente.
 
-<image src ="https://cdn.discordapp.com/attachments/639050837145944074/1051994464949895238/Screenshot_2022-12-12_at_17.12.05.png"></image> </image>
+![](./ProgramacaoDinamica.png)
 
-<p><font size = "3"> Este gráfico aproxima-se da função (Explicitado na última página):  </font></p>
+Este gráfico aproxima-se da função (Explicitado na última página):
 
 $$ O({\mathrm{e}^n}) $$
 
-<p><font size = "3"> Embora ainda bastante ineficiente este algoritmo, com programação dinâmica é extremamente mais rápido que o anterior, como se pode ver em comparação com os dois gráficos.  </font></p>
-
+Embora ainda bastante ineficiente este algoritmo, com programação dinâmica é extremamente mais rápido que o anterior, como se pode ver em comparação com os dois gráficos.
 
 ***
 
+# Relatório 1º Projeto ASA 2022/2023
 
-<h1 align = "center"> Relatório 1º Projeto ASA 2022/2023 </h1>
 
+## Grupo: tp012 
 
-<h2> Grupo: tp012 </h2>
+**Alunos: David Pires (103458) Diogo Miranda (102536)**
 
-<h2><font size = "3"> Alunos: David Pires (103458) Diogo Miranda (102536) </font></h2>
+## Possível explicitação da complexidade total de ambas as versões do projeto (extra)
 
-<br>
-<h1> Explicitação da complexidade total de ambas as versões do projeto </h1>
-
-<p><font size = "3"> Começaremos primeiro pela análise do algoritmo sem programação dinâmica, uma vez que a versão com programação dinâmica tem este como base.  </font></p>
-
-<p><font size = "3"> Como vimos na primeira parte do relatório o vetor analisa um vetor em O(n), no entanto como se trata de uma recursão este não vai ser o valor real. Como também não se trata de um problema que divida o problema em x sub-problemas iguais também não podemos utilizar a fórmula T(n) = aT(n/b) + O(nxd), já dada na disciplina pelo que teremos de recorrer a uma análise mais abstrata. </font></p>
-
-<p><font size = "3"> Tendo um vetor de tamanho n, esse mesmo vetor será dividido em n sub-problemas (de complexidade n), onde o primeiro desses subproblemas se dividirá em (n-1) subproblemas (até quadrados (n-1)x(n-1)), o segundo em (n-2) subproblemas (até quadrados (n-2)x(n-2)) ... o n-ésimo-1 em 1 subproblema (quadrados 1x1) e o n-ésimo em 0 subproblemas (matriz preenchida). O número de subproblemas na 1ª geração é, (e a complexidade): </font></p>
+Começaremos primeiro pela análise do algoritmo sem programação dinâmica, uma vez que a versão com programação dinâmica tem este como base.
+Como vimos na primeira parte do relatório o vetor analisa um vetor em O(n), no entanto como se trata de uma recursão este não vai ser o valor real. Como também não se trata de um problema que divida o problema em x sub-problemas iguais também não podemos utilizar a fórmula T(n) = aT(n/b) + O(nxd), já dada na disciplina pelo que teremos de recorrer a uma análise mais abstrata.
+Tendo um vetor de tamanho n, esse mesmo vetor será dividido em n sub-problemas (de complexidade n), onde o primeiro desses subproblemas se dividirá em (n-1) subproblemas (até quadrados (n-1)x(n-1)), o segundo em (n-2) subproblemas (até quadrados (n-2)x(n-2)) ... o n-ésimo-1 em 1 subproblema (quadrados 1x1) e o n-ésimo em 0 subproblemas (matriz preenchida). O número de subproblemas na 1ª geração é, (e a complexidade):
 
 $${\sum_{k=1}^{n} (n-k) = \dfrac{1}{2} \times n \times (n-1) \approx n^2}, \qquad {complexidade: n \times n^2 = n^3}$$
 
-<p><font size = "3"> Após a 2ª geração o número cada sub-problema irá se dividir até (n-2)x(n-2) sub-problemas (a partir de (n-1)x(n-1)) sendo o número total de subproblemas obtido por (e a complexidade): </font></p>
+Após a 2ª geração o número cada sub-problema irá se dividir até (n-2)x(n-2) sub-problemas (a partir de (n-1)x(n-1)) sendo o número total de subproblemas obtido por (e a complexidade):
 
 $$\sum_{k=1}^n \left(\sum_{p=k}^{n} (n-p)\right) \approx n \times n^2=n^3, \qquad complexidade: n \times n^3 = n^4$$
 
-<p><font size = "3"> Sabendo que iremos ter no máximo n² gerações, (preencher uma matriz n x n com quadrados 1 x 1) a complexidade desta solução tenderá para um valor perto de (esta é a complexidade da solução sem programação dinâmica): </font></p>
+Sabendo que iremos ter no máximo n² gerações, (preencher uma matriz n x n com quadrados 1 x 1) a complexidade desta solução tenderá para um valor perto de (esta é a complexidade da solução sem programação dinâmica):
 
 $$O(n^n)$$
 
-<p><font size = "3"> Tendo em conta que a programação dinâmica ou acaba um ramo da nossa árvore recursiva imediatamente ou guarda o valor desse mesmo ramo, chegamos à conclusão que na primeira iteração são armazenados n valores (todos), na segunda n x (n-1) (n ramos x (n-1) subramos) e assim consecutivamente. Os valores guardados tendem para n!.  </font></p>
+Tendo em conta que a programação dinâmica ou acaba um ramo da nossa árvore recursiva imediatamente ou guarda o valor desse mesmo ramo, chegamos à conclusão que na primeira iteração são armazenados n valores (todos), na segunda n x (n-1) (n ramos x (n-1) subramos) e assim consecutivamente. Os valores guardados tendem para n!.
 
-<p><font size = "3"> Sabendo que se um sub-problema estiver na hash table de programação dinâmica esse subproblema acaba nesse preciso momento podemos obter o número total de subproblemas pela fórmula de número de sub-problemas / sub-problemas guardados na hash table (cada ramo tem sub-problemas repetidos, explicação em baixo).  </font></p>
+Sabendo que se um sub-problema estiver na hash table de programação dinâmica esse subproblema acaba nesse preciso momento podemos obter o número total de subproblemas pela fórmula de número de sub-problemas / sub-problemas guardados na hash table (cada ramo tem sub-problemas repetidos, explicação em baixo).
 
 $$(subramo1-hash )+(subramo2-hash)+(...) = \dfrac{subramos}{hash}$$
 
-<p><font size = "3"> Juntando as duas fórmulas, para o maior n x n possível a complexidade com programação dinâmica será complexidade(1 loop) x número de chamadas recursivas, Assim para um vetor de tamanho n iremos obter: </font></p>
+Juntando as duas fórmulas, para o maior n x n possível a complexidade com programação dinâmica será complexidade(1 loop) x número de chamadas recursivas, Assim para um vetor de tamanho n iremos obter:
 
 $$n \times \dfrac{n^n}{n!} = \dfrac{n^n}{n!} + \dfrac{n^n}{n!} + ... = \sum_{n=0}^{\infty}\dfrac{n^n}{n!} = \mathrm{e}^n $$
-
-***
