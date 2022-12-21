@@ -1,4 +1,5 @@
-**TODO: Figure out relation inbetween number of edges & weights.** 
+**TODO: Figure out relation inbetween number of edges & weights.**
+**Probable fix: first check graphs with 1 vertix taken then with 2.**
 
 **Problem:** Giving a undirected graph find the heaviest path that connects all vertices.
 **Solution:**
@@ -6,6 +7,6 @@
 This part of the code has a complexity of:
 $$O(n)$$
 
-- **Part 2:** Read the sorted input, start removing the higher weight edges and mark which vertices were already reached. If a edge has at least a not marked vertice add it and mark that vertice.
+- **Part 2:** Read the sorted input, start removing the higher weight edges and mark which vertices were already reached. If a edge has at least a not marked vertice add it and mark that vertices.
 This part of the code has a complexity of:
 $$O(n)$$

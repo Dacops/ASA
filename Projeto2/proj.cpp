@@ -36,8 +36,11 @@ void parseInput() {
     }
 }
 
-bool possible(int u, int v) {
-    if(_vertices[u-1] && _vertices[v-1]) return false;
+bool possible(int u, int v, bool flag) {
+    // only one vertex has been visited
+    if (flag) if(_vertices[u-1] == _vertices[v-1]) return false;
+    // one or none vertices have been visited
+    if (!flag) if(_vertices[u-1] & _vertices[v-1]) return false;
     _vertices[u-1] = true;
     _vertices[v-1] = true;
     return true;
@@ -45,10 +48,16 @@ bool possible(int u, int v) {
 
 void readInput() {
     for(int i=(int)_weights.size()-1; i>=0; i--) {         // weight of edge
+
         for(int j=(int)_weights[i].size()-1; j>=0; j--) {  // edges with i+1 weight
             int u = _weights[i][j].first;
             int v = _weights[i][j].second;
-            if(possible(u, v)) { _weight+=(i+1); cout << i+1 << endl; }
+            if(possible(u, v, true)) _weight+=(i+1);
+        }
+        for(int j=(int)_weights[i].size()-1; j>=0; j--) {  // edges with i+1 weight
+            int u = _weights[i][j].first;
+            int v = _weights[i][j].second;
+            if(possible(u, v, false)) _weight+=(i+1);
         }
     }
 }
