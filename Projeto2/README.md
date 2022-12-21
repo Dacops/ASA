@@ -6,6 +6,6 @@
 This part of the code has a complexity of:
 $$O(n)$$
 
-- **Part 2:** Read the sorted input, start removing the higher weight edges and mark which vertices were already reached. If a edge has at leist a not marked vertice add it and mark that vertice.
+- **Part 2:** Read the sorted input, start removing the higher weight edges and mark which vertices were already reached. If a edge has at least a not marked vertice add it and mark that vertice.
 This part of the code has a complexity of:
 $$O(n)$$
