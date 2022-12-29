@@ -53,6 +53,12 @@ bool notCycle(int u, int v) {
         int predecessor = (_predecessors[u-1]>_predecessors[v-1])? _predecessors[u-1] : _predecessors[v-1];
         int update = (_predecessors[u-1]>_predecessors[v-1])? _predecessors[v-1] : _predecessors[u-1];
 
+        // only one vertex was found
+        if (update==0) {
+            _predecessors[u-1] = predecessor;
+            _predecessors[v-1] = predecessor;
+        }
+
         // update all vertices with predecessor 'update' (join trees)
         for(int i=0; i<(int)_predecessors.size(); i++) {
             if(_predecessors[i]==update) _predecessors[i]=predecessor;
