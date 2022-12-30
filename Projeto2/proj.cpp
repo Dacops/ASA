@@ -1,67 +1,61 @@
 #include <iostream>
 #include <vector>
+#include <tuple>
+#include <algorithm>
 
 using namespace std;
 
 
-vector<vector<pair<int, int>>> _weights;    // 1st vector: .size() = max weight
-                                            // 2nd vector: .size() = edges with weight index - 1
-                                            // pair: .first = u, .second = v
-vector<int> _predecessors;  // identify cycles in Kruskal
-int _weight = 0;            // sum of the weights of edges taken
-int _maxW = 0;              // max edge weight
+vector<tuple<int, int, int>> _data; // saves all edges data in the form (w, u, v)
+vector<int> _parent;                // saves "parents" of the (index+1) vertex
+int _vertices, _edges;              // saves number of vertices / edges
+int _weight;                        // saves the sum of weights of the path taken
 
 
 void parseInput() {
-    // read number of vertices and edges
-    int vertices, edges;
-    cin >> vertices;
-    cin >> edges;
+    
+    cin >> _vertices;               // read vertices
+    cin >> _edges;                  // read edges
 
-    // initialize predecessors vector
-    _predecessors.resize(vertices-1);
-    for(int i=0; i<(vertices-1); i++) _predecessors[i] = 0;
+    for(int i=0; i<_edges; i++) {   // create data vector
 
-    // read edges
-    for(int i=0; i<edges; i++) {
-        int u, v, w;
-
-        cin >> u, cin.ignore(), cin >> v, cin.ignore(), cin >> w;
-        if(w>_maxW) {
-            _maxW = w;
-            _weights.resize(w);
-        }
-
-        _weights[w-1].push_back({u, v});
+        int w, u, v;
+        if(scanf("%d %d %d\n", &u, &v, &w)>0) {}    // avoid unused return value
+        _data.push_back(make_tuple(w, u, v));
     }
+    _parent.resize(_vertices, 0);
+
+    sort(_data.begin(), _data.end());   // sort the data vector by weight
 }
 
 bool notCycle(int u, int v) {
 
-    // same predecessors, creates cycle, do not add
-    if ( (_predecessors[u-1]==_predecessors[v-1]) && _predecessors[u-1]!=0 ) return false;
+    // same "parents" -> creates cycle
+    if ( (_parent[u-1]==_parent[v-1]) && _parent[u-1]!=0 ) return false;
 
-    // both vertices haven't been found, create predecessor
-    if (_predecessors[u-1]==_predecessors[v-1]) {
-        int predecessor = (u>v)? u : v;
-        _predecessors[u-1] = predecessor;
-        _predecessors[v-1] = predecessor;
+    // both vertices haven't been found
+    if (_parent[u-1]==_parent[v-1]) {
+        int parent = (u>v)? u : v;
+        _parent[u-1] = parent;
+        _parent[v-1] = parent;
     }
 
-    // different predecessors, does not create cycle
+    // different parents
     else {
-        int predecessor = (_predecessors[u-1]>_predecessors[v-1])? _predecessors[u-1] : _predecessors[v-1];
-        int update = (_predecessors[u-1]>_predecessors[v-1])? _predecessors[v-1] : _predecessors[u-1];
+        int parent = (_parent[u-1]>_parent[v-1])? _parent[u-1] : _parent[v-1];
+        int update = (_parent[u-1]>_parent[v-1])? _parent[v-1] : _parent[u-1];
 
         // only one vertex was found
         if (update==0) {
-            _predecessors[u-1] = predecessor;
-            _predecessors[v-1] = predecessor;
+            _parent[u-1] = parent;
+            _parent[v-1] = parent;
         }
 
-        // update all vertices with predecessor 'update' (join trees)
-        for(int i=0; i<(int)_predecessors.size(); i++) {
-            if(_predecessors[i]==update) _predecessors[i]=predecessor;
+        // both vertices have been found -> join trees
+        else {
+            for(int i=0; i<_edges; i++) {
+                if(_parent[i]==update) _parent[i]=parent;
+            }
         }
     }
 
@@ -69,23 +63,23 @@ bool notCycle(int u, int v) {
 }
 
 void evaluateInput() {
+
     // Kruskal Implementation
-    for(int i=(int)_weights.size()-1; i>=0; i--) {         // all edges value buckets
-        for(int j=(int)_weights[i].size()-1; j>=0; j--) {  // all edges in 'i' value bucket
+    for(int i=(_edges-1); i>=0; i--) {
 
-            int u = _weights[i][j].first;
-            int v = _weights[i][j].second;
+        int u = get<1>(_data[i]);
+        int v = get<2>(_data[i]);
 
-            if(notCycle(u,v)) {
-                _weight += (i+1);
-            }
+        if(notCycle(u,v)) {
+            _weight += get<0>(_data[i]);
         }
     }
 }
 
 int main() {
-    parseInput();       // complexity: O(n)
-    evaluateInput();    // complexity: O(n)
+
+    parseInput();
+    evaluateInput();
     cout << _weight << endl;
 
     return 0;

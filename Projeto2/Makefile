@@ -7,6 +7,6 @@ run: proj
 	./proj < input.txt
 
 clear:
-	rm -f proj gerador testfile
+	rm -f proj
 
 
