@@ -7,56 +7,76 @@ using namespace std;
 
 
 vector<tuple<int, int, int>> _data; // saves all edges data in the form (w, u, v)
-vector<int> _parent;                // saves "parents" of the (index+1) vertex
+vector<pair<int, vector<int>>> _parent;     // saves "parents" of the (index+1) vertex and children
 int _vertices, _edges;              // saves number of vertices / edges
 int _weight;                        // saves the sum of weights of the path taken
 
 
 void parseInput() {
     
+    ios::sync_with_stdio(false);    // faster read speeds
     cin >> _vertices;               // read vertices
     cin >> _edges;                  // read edges
 
     for(int i=0; i<_edges; i++) {   // create data vector
 
         int w, u, v;
-        if(scanf("%d %d %d\n", &u, &v, &w)>0) {}    // avoid unused return value
+        cin >> u, cin.ignore(), cin >> v, cin.ignore(), cin >> w;
         _data.push_back(make_tuple(w, u, v));
     }
-    _parent.resize(_vertices, 0);
+    
+    for(int i=0; i<_vertices; i++) {    // create _parent vector
+        _parent.push_back(make_pair(i+1, vector<int>()));
+    }
 
     sort(_data.begin(), _data.end());   // sort the data vector by weight
 }
 
 bool notCycle(int u, int v) {
 
-    // same "parents" -> creates cycle
-    if ( (_parent[u-1]==_parent[v-1]) && _parent[u-1]!=0 ) return false;
+    // get "parents" of vertex u and v
+    int pU = _parent[u-1].first, pV = _parent[v-1].first;
 
-    // both vertices haven't been found
-    if (_parent[u-1]==_parent[v-1]) {
-        int parent = (u>v)? u : v;
-        _parent[u-1] = parent;
-        _parent[v-1] = parent;
-    }
+    // same parents -> is a cycle
+    if(pU==pV) return false;
 
-    // different parents
+    // join tree v with tree u
+    if(pU>pV) {
+        
+        // add v to u "children"
+        _parent[u-1].second.push_back(v);
+
+        // update v "parent"
+        _parent[v-1].first = pU;
+
+        // update u "children"
+        for(int i=0; i<(int)_parent[v-1].second.size(); i++) {
+            int vertex = _parent[v-1].second[i];
+            _parent[vertex-1].first = pU;
+            _parent[u-1].second.push_back(vertex);
+        }
+
+        // clear v "children" -> all passed to u
+        _parent[v-1].second.resize(0);
+    } 
+    // join tree u with tree v
     else {
-        int parent = (_parent[u-1]>_parent[v-1])? _parent[u-1] : _parent[v-1];
-        int update = (_parent[u-1]>_parent[v-1])? _parent[v-1] : _parent[u-1];
 
-        // only one vertex was found
-        if (update==0) {
-            _parent[u-1] = parent;
-            _parent[v-1] = parent;
+        // add u to v "children"
+        _parent[v-1].second.push_back(u);
+
+        // update u "parent"
+        _parent[u-1].first = pV;
+
+        // update v "children"
+        for(int i=0; i<(int)_parent[u-1].second.size(); i++) {
+            int vertex = _parent[u-1].second[i];
+            _parent[vertex-1].first = pV;
+            _parent[v-1].second.push_back(vertex);
         }
 
-        // both vertices have been found -> join trees
-        else {
-            for(int i=0; i<_edges; i++) {
-                if(_parent[i]==update) _parent[i]=parent;
-            }
-        }
+        // clear v "children" -> all passed to u
+        _parent[u-1].second.resize(0);
     }
 
     return true;
@@ -66,7 +86,7 @@ void evaluateInput() {
 
     // Kruskal Implementation
     for(int i=(_edges-1); i>=0; i--) {
-
+        
         int u = get<1>(_data[i]);
         int v = get<2>(_data[i]);
 
