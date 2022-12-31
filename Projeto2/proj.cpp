@@ -7,7 +7,7 @@ using namespace std;
 
 
 vector<tuple<int, int, int>> _data; // saves all edges data in the form (w, u, v)
-vector<pair<int, vector<int>>> _parent;     // saves "parents" of the (index+1) vertex and children
+vector<pair<int, vector<int>>> _parent;     // saves "parent" of the (index+1) vertex and children
 int _vertices, _edges;              // saves number of vertices / edges
 int _weight;                        // saves the sum of weights of the path taken
 
@@ -26,7 +26,8 @@ void parseInput() {
     }
     
     for(int i=0; i<_vertices; i++) {    // create _parent vector
-        _parent.push_back(make_pair(i+1, vector<int>()));
+        // each vertex has itself has his own "parent" and "child"
+        _parent.push_back(make_pair(i+1, vector<int>(1, i+1)));
     }
 
     sort(_data.begin(), _data.end());   // sort the data vector by weight
@@ -42,12 +43,6 @@ bool notCycle(int u, int v) {
 
     // join tree v with tree u
     if(pU>pV) {
-        
-        // add v to u "children"
-        _parent[u-1].second.push_back(v);
-
-        // update v "parent"
-        _parent[v-1].first = pU;
 
         // update u "children"
         for(int i=0; i<(int)_parent[v-1].second.size(); i++) {
@@ -58,15 +53,10 @@ bool notCycle(int u, int v) {
 
         // clear v "children" -> all passed to u
         _parent[v-1].second.resize(0);
+        _parent[v-1].second.push_back(v);
     } 
     // join tree u with tree v
     else {
-
-        // add u to v "children"
-        _parent[v-1].second.push_back(u);
-
-        // update u "parent"
-        _parent[u-1].first = pV;
 
         // update v "children"
         for(int i=0; i<(int)_parent[u-1].second.size(); i++) {
@@ -77,6 +67,7 @@ bool notCycle(int u, int v) {
 
         // clear v "children" -> all passed to u
         _parent[u-1].second.resize(0);
+        _parent[u-1].second.push_back(u);
     }
 
     return true;
@@ -89,7 +80,7 @@ void evaluateInput() {
         
         int u = get<1>(_data[i]);
         int v = get<2>(_data[i]);
-
+        
         if(notCycle(u,v)) {
             _weight += get<0>(_data[i]);
         }
