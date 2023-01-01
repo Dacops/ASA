@@ -18,16 +18,18 @@ void parseInput() {
     cin >> _vertices;               // read vertices
     cin >> _edges;                  // read edges
 
-    for(int i=0; i<_edges; i++) {   // create data vector
+    _data.resize(_edges);           // resize _data vector
+    _parent.resize(_vertices);      // resize _vertices vector
 
+    for(int i=0; i<_edges; i++) {   // create data vector
         int w, u, v;
         cin >> u >> v >> w;
-        _data.push_back(make_tuple(w, u, v));
+        _data[i] = (make_tuple(w, u, v));
     }
     
     for(int i=0; i<_vertices; i++) {    // create _parent vector
         // each vertex has itself has his own "parent" and "child"
-        _parent.push_back(make_pair(i+1, vector<int>(1, i+1)));
+        _parent[i] = (make_pair(i+1, vector<int>(1, i+1)));
     }
 
     sort(_data.begin(), _data.end());   // sort the data vector by weight
