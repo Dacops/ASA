@@ -21,7 +21,7 @@ void parseInput() {
     for(int i=0; i<_edges; i++) {   // create data vector
 
         int w, u, v;
-        cin >> u, cin.ignore(), cin >> v, cin.ignore(), cin >> w;
+        cin >> u >> v >> w;
         _data.push_back(make_tuple(w, u, v));
     }
     
@@ -41,34 +41,19 @@ bool notCycle(int u, int v) {
     // same parents -> is a cycle
     if(pU==pV) return false;
 
-    // join tree v with tree u
-    if(pU>pV) {
+    // parent of U > parent of V? if yes joins tree v with tree u, else otherwise
+    int sP, bP, vx;     // smaller parent, bigger parent and vertex of the smaller parent
+    (pU>pV)? (sP=pV, bP=pU, vx=v) : (sP=pU, bP=pV, vx=u);   // initialize those values accordingly
 
-        // update u "children"
-        for(int i=0; i<(int)_parent[v-1].second.size(); i++) {
-            int vertex = _parent[v-1].second[i];
-            _parent[vertex-1].first = pU;
-            _parent[u-1].second.push_back(vertex);
-        }
-
-        // clear v "children" -> all passed to u
-        _parent[v-1].second.resize(0);
-        _parent[v-1].second.push_back(v);
-    } 
-    // join tree u with tree v
-    else {
-
-        // update v "children"
-        for(int i=0; i<(int)_parent[u-1].second.size(); i++) {
-            int vertex = _parent[u-1].second[i];
-            _parent[vertex-1].first = pV;
-            _parent[v-1].second.push_back(vertex);
-        }
-
-        // clear v "children" -> all passed to u
-        _parent[u-1].second.resize(0);
-        _parent[u-1].second.push_back(u);
+    // update bigger parent tree children with smaller parent tree children
+    for(int i=0; i<(int)_parent[sP-1].second.size(); i++) {
+        int vertex = _parent[sP-1].second[i];       // get childrens of smaller parent tree
+        _parent[vertex-1].first = bP;               // update their parent to the bigger parent
+        _parent[bP-1].second.push_back(vertex);     // add them to bigger parent children
     }
+    
+    // free smaller tree children -> Avoid Memory Limit Exceeded errors
+    _parent[sP-1].second.resize(0);
 
     return true;
 }
