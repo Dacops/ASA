@@ -47,11 +47,15 @@ bool notCycle(int u, int v) {
     int sP, bP, vx;     // smaller parent, bigger parent and vertex of the smaller parent
     (pU>pV)? (sP=pV, bP=pU, vx=v) : (sP=pU, bP=pV, vx=u);   // initialize those values accordingly
 
+    // resize bP children vector to concatenate with sP children vector
+    int iSize = _parent[bP-1].second.size();
+    _parent[bP-1].second.resize( iSize + _parent[sP-1].second.size() );
+
     // update bigger parent tree children with smaller parent tree children
     for(int i=0; i<(int)_parent[sP-1].second.size(); i++) {
-        int vertex = _parent[sP-1].second[i];       // get childrens of smaller parent tree
-        _parent[vertex-1].first = bP;               // update their parent to the bigger parent
-        _parent[bP-1].second.push_back(vertex);     // add them to bigger parent children
+        int vertex = _parent[sP-1].second[i];                       // get childrens of smaller parent tree
+        _parent[vertex-1].first = bP;                               // update their parent to the bigger parent
+        _parent[bP-1].second[iSize+i] = _parent[sP-1].second[i];    // add sP children to bP children
     }
     
     // free smaller tree children -> Avoid Memory Limit Exceeded errors
