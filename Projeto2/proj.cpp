@@ -6,30 +6,28 @@
 using namespace std;
 
 
-vector<tuple<int, int, int>> _data; // saves all edges data in the form (w, u, v)
-vector<pair<int, vector<int>>> _parent;     // saves "parent" of the (index+1) vertex and children
-int _vertices, _edges;              // saves number of vertices / edges
-int _weight;                        // saves the sum of weights of the path taken
+vector<tuple<int, int, int>> _data;     // saves all edges data in the form (w, u, v)
+vector<pair<int, vector<int>>> _parent; // saves "parent" of the (index+1) vertex and children
+int _vertices, _edges;                  // saves number of vertices / edges
+int _weight;                            // saves the sum of weights of the path taken
 
 
 void parseInput() {
     
-    ios::sync_with_stdio(false);    // faster read speeds
-    cin >> _vertices;               // read vertices
-    cin >> _edges;                  // read edges
+    ios::sync_with_stdio(false);        // faster read speeds
+    cin >> _vertices;                   // read vertices
+    cin >> _edges;                      // read edges
 
-    _data.resize(_edges);           // resize _data vector
-    _parent.resize(_vertices);      // resize _vertices vector
+    for(int i=0; i<_edges; i++) {       // create data vector
 
-    for(int i=0; i<_edges; i++) {   // create data vector
         int w, u, v;
         cin >> u >> v >> w;
-        _data[i] = (make_tuple(w, u, v));
+        _data.push_back(make_tuple(w, u, v));
     }
     
     for(int i=0; i<_vertices; i++) {    // create _parent vector
         // each vertex has itself has his own "parent" and "child"
-        _parent[i] = (make_pair(i+1, vector<int>(1, i+1)));
+        _parent.push_back(make_pair(i+1, vector<int>(1, i+1)));
     }
 
     sort(_data.begin(), _data.end());   // sort the data vector by weight
@@ -47,15 +45,11 @@ bool notCycle(int u, int v) {
     int sP, bP, vx;     // smaller parent, bigger parent and vertex of the smaller parent
     (pU>pV)? (sP=pV, bP=pU, vx=v) : (sP=pU, bP=pV, vx=u);   // initialize those values accordingly
 
-    // resize bP children vector to concatenate with sP children vector
-    int iSize = _parent[bP-1].second.size();
-    _parent[bP-1].second.resize( iSize + _parent[sP-1].second.size() );
-
     // update bigger parent tree children with smaller parent tree children
     for(int i=0; i<(int)_parent[sP-1].second.size(); i++) {
-        int vertex = _parent[sP-1].second[i];                       // get childrens of smaller parent tree
-        _parent[vertex-1].first = bP;                               // update their parent to the bigger parent
-        _parent[bP-1].second[iSize+i] = _parent[sP-1].second[i];    // add sP children to bP children
+        int vertex = _parent[sP-1].second[i];       // get childrens of smaller parent tree
+        _parent[vertex-1].first = bP;               // update their parent to the bigger parent
+        _parent[bP-1].second.push_back(vertex);     // add them to bigger parent children
     }
     
     // free smaller tree children -> Avoid Memory Limit Exceeded errors
