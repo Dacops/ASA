@@ -4,9 +4,9 @@
 
 **Alunos: David Pires (103458) Diogo Miranda (102536)**
 
-***
-
 ## Descrição do Problema e da Solução
+
+***
 
 **Problema:** Dado um grafo G = (V,E), determinar o caminho de maior peso possível no grafo (Maximum Spanning Tree).
 
@@ -25,41 +25,25 @@
 
 - Implementação de Kruskal, percorrer todas as edges, O(E) vezes a complexidade de uma chamada à função `notCycle()`. Na função `notCycle()` todos os parents da tree com menor tamanho são unidos à maior àrvore, com compressão de caminhos percorre-se todos os vértices (± procura em àrvore binária, tem complexidade O(log(E))). Assim a complexidade é: **O(E.log(E))**
 
-> **_NOTA:_** Note-se que a nossa implementação de Kruskal não utiliza o critério de desempate por rank na junção de àrvores pelo que a procura nas àrvores será mais lenta que log(E) no pior caso. A nossa implementação de Kruskal terá uma complexidade um pouco pior que a demonstrada.
+Note-se que a nossa implementação de Kruskal não utiliza o critério de desempate por rank na junção de àrvores pelo que a procura nas àrvores será mais lenta que log(E) no pior caso. A nossa implementação de Kruskal terá uma complexidade um pouco pior que a demonstrada.
 
 
 Complexidade Global:
 
 $$O(E \times log(E))$$
 
-
 ***
 
-# Relatório 2º Projeto ASA 2022/2023
+Os seguintes resultados foram obtidos através de cortes do seguinte [teste](https://github.com/Dacops/ASA/blob/main/Projeto2/input.txt) com o comando `sed` de UNIX. Os resultados foram obtidos com a ferramenta [hyperfine](https://github.com/sharkdp/hyperfine) e são uma média de entre 100~200 testes.
 
+![](./Resources/Kruskal.png)
 
-## Grupo: tp012 
+Esta função pode parecer linear mas E.log(E) também o parece para estes números elevados. f(E)=E é uma função linear, e f(E)=log(E) para estes números elevados cresce muito lentamente pelo que parece linear (log(100k)=11.5, ..., log(1M)=13.8).
 
-**Alunos: David Pires (103458) Diogo Miranda (102536)**
-
-## Avaliação Experimental dos Resultados
-
-> **_NOTA:_** Os seguintes resultados foram obtidos através de cortes do seguinte **ADD LINK teste ADD LINK** com o comando `sed` de UNIX. Os resultados foram obtidos com a ferramenta [hyperfine](https://github.com/sharkdp/hyperfine) e são uma média de entre 100~200 testes.
-
-![](./Resources/Recursao.png)
-
-Podemos concluir que gráfico aproxima-se da função E.log(E) (gráfico em baixo) pelo que suporta a tese que a complexidade global é:
+Assim Podemos concluir que gráfico aproxima-se da função E. Pelo que suporta a nossa suposição da complexidade deste programa ser:
 
 $$O(E \times log(E))$$
 
-Com esta complexidade este algoritmo é extremamente ineficiente, no entanto com a introdução da programação dinâmica conseguimos tornar o algoritmo bastante mais eficiente.
+Com 0 edges o tempo de execução não é 0 uma vez que ainda são gerados anteriormente os vetores para receber os vértices e a sua respetiva raiz. Este exemplo utiliza 10000 vértice, pelo que este processo ainda vai demorar algum tempo. Também podemos concluir aqui que para inputs com muitos vértices e poucas edges a complexidade de gerar este vetor será maior do que resolver o problema, assim nestes casos a complexidade da solução será: 
 
-![](./Resources/ProgramacaoDinamica.png)
-
-Este gráfico aproxima-se da função (Explicitado na última página):
-
-$$ O({\mathrm{e}^n}) $$
-
-Embora ainda bastante ineficiente este algoritmo, com programação dinâmica é extremamente mais rápido que o anterior, como se pode ver em comparação com os dois gráficos.
-
-***
+$$O(V)$$
