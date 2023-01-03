@@ -38,7 +38,7 @@ Os seguintes resultados foram obtidos através de cortes do seguinte [teste](htt
 
 ![](./Resources/Kruskal.png)
 
-Esta função pode parecer linear mas E.log(E) também o parece para estes números elevados. f(E)=E é uma função linear, e f(E)=log(E) para estes números elevados cresce muito lentamente pelo que parece linear (log(100k)=11.5, ..., log(1M)=13.8).
+Esta função pode parecer linear mas E.log(E) também o parece para estes números elevados. f(E)=E é uma função linear, e f(E)=log(E) para estes números elevados cresce muito lentamente pelo que parece quase constante (log(100k)=11.5, ..., log(1M)=13.8).
 
 Assim Podemos concluir que gráfico aproxima-se da função E. Pelo que suporta a nossa suposição da complexidade deste programa ser:
 
