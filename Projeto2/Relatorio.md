@@ -27,7 +27,7 @@
 
 Complexidade Global:
 
-$$O(E \times log(E)) + O(E \times log(V)) = 
+$$O(E \times log(E)) + O(E \times log(V)) \in 
 \left\{
 \begin{array}{ll}
       O(E \times log(E)) & V > E\\
