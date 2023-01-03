@@ -23,14 +23,20 @@
 
 - Dar sort no vetor de edges (utilizada a função `sort()` da biblioteca `<algorithm>`): **O(E.log(E))**
 
-- Implementação de Kruskal, percorrer todas as edges, O(E) vezes a complexidade de uma chamada à função `notCycle()`. Na função `notCycle()` todos os parents da tree com menor tamanho são unidos à maior àrvore, com compressão de caminhos percorre-se todos os vértices (± procura em àrvore binária, tem complexidade O(log(E))). Assim a complexidade é: **O(E.log(E))**
-
-Note-se que a nossa implementação de Kruskal não utiliza o critério de desempate por rank na junção de àrvores pelo que a procura nas àrvores será mais lenta que log(E) no pior caso. A nossa implementação de Kruskal terá uma complexidade um pouco pior que a demonstrada.
-
+- Implementação de Kruskal, percorrer todas as edges, O(E) vezes a complexidade de uma chamada à função `notCycle()`. Na função `notCycle()` todos os parents da tree com menor tamanho são unidos à maior àrvore, com compressão de caminhos percorre-se todos os vértices (± procura em àrvore binária, tem complexidade O(log(V))). Assim a complexidade é: **O(E.log(V))**
 
 Complexidade Global:
 
-$$O(E \times log(E))$$
+$$O(E \times log(E)) + O(E \times log(V)) = 
+\left\{
+\begin{array}{ll}
+      O(E \times log(E)) & V > E\\
+      O(E \times log(V)) & V < E\\
+\end{array} 
+\right.
+$$
+
+Note-se que a nossa implementação de Kruskal não utiliza o critério de desempate por rank na junção de àrvores pelo que a procura nas àrvores será mais lenta que log(E) no pior caso. A nossa implementação de Kruskal terá uma complexidade um pouco pior que a demonstrada.
 
 ***
 
@@ -38,7 +44,7 @@ Os seguintes resultados foram obtidos através de cortes do seguinte [teste](htt
 
 ![](./Resources/Kruskal.png)
 
-Esta função pode parecer linear mas E.log(E) também o parece para estes números elevados. f(E)=E é uma função linear, e f(E)=log(E) para estes números elevados cresce muito lentamente pelo que parece quase constante (log(100k)=11.5, ..., log(1M)=13.8).
+Número de edges é maior que número de vértices, logo esta aplicação do algoritmo de Krustal deverá ser E.log(E). No gráfico esta função pode parecer linear mas E.log(E) também o parece para estes números elevados. f(E)=E é uma função linear, e f(E)=log(E) para estes números elevados cresce muito lentamente pelo que parece quase constante (log(100k)=11.5, ..., log(1M)=13.8).
 
 Assim Podemos concluir que gráfico aproxima-se da função E. Pelo que suporta a nossa suposição da complexidade deste programa ser:
 
