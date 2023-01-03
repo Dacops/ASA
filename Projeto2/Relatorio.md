@@ -17,9 +17,9 @@
 
 - Ler o input dado (simples loop que lê todas as entradas (#V, #E, edges)): O(E+2) = **O(E)**
 
-- Criação do vetor para guardar os vértices e a sua raiz: **O(V)**
+- Criação do vetor para guardar os vértices e a sua raiz (e preenchimento): **O(V)**
 
-- Criação do vetor para guardar as edges: **O(E)**
+- Criação do vetor para guardar as edges (e preenchimento): **O(E)**
 
 - Dar sort no vetor de edges (utilizada a função `sort()` da biblioteca `<algorithm>`): **O(E.log(E))**
 
@@ -36,7 +36,7 @@ $$O(E \times log(E)) + O(E \times log(V)) =
 \right.
 $$
 
-Note-se que a nossa implementação de Kruskal não utiliza o critério de desempate por rank na junção de àrvores pelo que a procura nas àrvores será mais lenta que log(E) no pior caso. A nossa implementação de Kruskal terá uma complexidade um pouco pior que a demonstrada.
+Note-se que a nossa implementação de Kruskal não utiliza o critério de desempate por rank na junção de àrvores pelo que a procura nas àrvores será mais lenta que log(V) no pior caso. A nossa implementação de Kruskal terá uma complexidade um pouco pior que a demonstrada.
 
 ***
 
@@ -50,6 +50,6 @@ Assim Podemos concluir que gráfico aproxima-se da função E. Pelo que suporta 
 
 $$O(E \times log(E))$$
 
-Com 0 edges o tempo de execução não é 0 uma vez que ainda são gerados anteriormente os vetores para receber os vértices e a sua respetiva raiz. Este exemplo utiliza 10000 vértice, pelo que este processo ainda vai demorar algum tempo. Também podemos concluir aqui que para inputs com muitos vértices e poucas edges a complexidade de gerar este vetor será maior do que resolver o problema, assim nestes casos a complexidade da solução será: 
+Com 0 edges o tempo de execução não é 0 uma vez que ainda são gerados anteriormente os vetores para receber os vértices e a sua respetiva raiz. Este exemplo utiliza 10000 vértices, pelo que este processo ainda vai demorar algum tempo. Também podemos concluir aqui que para inputs com muitos vértices e poucas edges a complexidade de gerar (e preencher) este vetor será maior do que resolver o problema, assim nestes casos a complexidade da solução será: 
 
 $$O(V)$$
