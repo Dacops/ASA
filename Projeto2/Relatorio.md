@@ -19,7 +19,7 @@
 
 - Criação do vetor para guardar os vértices e a sua raiz (e preenchimento): **O(V)**
 
-- Criação do vetor para guardar as edges (e preenchimento): **O(E)**
+- Criação do vetor para guardar as edges (e preenchimento): **O(E)** 
 
 - Dar sort no vetor de edges (utilizada a função `sort()` da biblioteca `<algorithm>`): **O(E.log(E))**
 
@@ -44,7 +44,7 @@ Os seguintes resultados foram obtidos através de cortes do seguinte [teste](htt
 
 ![](./Resources/Kruskal.png)
 
-Número de edges é maior que número de vértices, logo esta aplicação do algoritmo de Krustal deverá ser E.log(E). No gráfico esta função pode parecer linear mas E.log(E) também o parece para estes números elevados. f(E)=E é uma função linear, e f(E)=log(E) para estes números elevados cresce muito lentamente pelo que parece quase constante (log(100k)=11.5, ..., log(1M)=13.8).
+Número de edges é maior que número de vértices, logo esta aplicação do algoritmo de Krustal deverá ser E.log(E). No gráfico esta função pode parecer linear mas E.log(E) também o parece para estes números elevados. f(E)=E é uma função linear, e f(E)=log(E) para estes números elevados cresce muito lentamente pelo que parece quase constante (log(100k)=16.61, ..., log(1M)=19.93).
 
 Assim Podemos concluir que gráfico aproxima-se da função E. Pelo que suporta a nossa suposição da complexidade deste programa ser:
 
