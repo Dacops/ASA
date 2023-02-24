@@ -29,7 +29,7 @@ void parseInput() {
     
     for(int i=0; i<_vertices; i++) {    // create _parent vector
         // each vertex has itself has his own "parent" and "child"
-        _parent[i] = (make_pair(i+1, vector<int>(1, i+1)));
+        _parent[i] = {i+1, vector<int>(1, i+1)};
     }
 
     sort(_data.begin(), _data.end());   // sort the data vector by weight
